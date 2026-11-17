@@ -1,128 +1,136 @@
-<!DOCTYPE html>
-<html lang="ar" dir="rtl">
+html_content = """<!DOCTYPE html>
+<html lang="ar" dir="rtl" data-theme="light">
 <head>
   <meta charset="UTF-8">
-  <title>أثر - رفيق المسلم | تلاوات، قراءة، أذكار، وأحاديث نبوية</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="icon" href="favicon.png" type="image/png">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>أثر - رفيق المسلم</title>
+  <meta name="description" content="تطبيق إسلامي شامل: مواقيت الصلاة، القرآن الكريم، الأذكار، السبحة، اتجاه القبلة، وأسماء الله الحسنى">
+  <meta name="theme-color" content="#0d3b2e">
+  <link rel="preconnect" href="https://fonts.googleapis.com/">
+  <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin="">
+  <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
+  <div class="app">
+    <header class="topbar">
+      <button class="icon-btn" id="backBtn" aria-label="رجوع" hidden>
+        <svg viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"></path></svg>
+      </button>
+      <h1 id="pageTitle">أثر - رفيق المسلم (by Mahmoud Helal)</h1>
+      <button class="icon-btn" id="settingsBtn" aria-label="الإعدادات">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"></path></svg>
+      </button>
+    </header>
 
-  <div class="positive-toast" id="positiveToast">💡 تذكير: لا تنسَ الاستغفار والصلاة على النبي ﷺ الآن!</div>
+    <main id="view" class="fade-in">
+      <section class="hero">
+        <div class="dates"><span class="hijri">٧ جمادى الآخرة ١٤٤٨ هـ</span><span>الثلاثاء، ١٧ نوفمبر ٢٠٢٦</span></div>
+        <div class="next-label">الصلاة القادمة</div>
+        <div class="next-name" id="nextName">الفجر • ٤:٥٢ ص</div>
+        <div class="countdown" id="cd">٠٨:٠٩:٥٦</div>
+        <div class="loc"><svg viewBox="0 0 24 24"><path d="M12 21s-7-6.2-7-12a7 7 0 0 1 14 0c0 5.8-7 12-7 12z"></path><circle cx="12" cy="9" r="2.5"></circle></svg>القاهرة</div>
+      </section>
 
-  <header>
-    <div class="top-bar-row">
-      <div style="font-size: 0.8rem; color: var(--accent); font-weight: 700;">by Mahmoud Helal</div>
-      <button class="icon-btn" id="themeBtn" title="الوضع الليلي / النهار">🌙</button>
-    </div>
-    <div class="app-title">🌙 أثر - رفيق المسلم</div>
-    <div class="app-subtitle">قرآن كريم - ذكر - أذان - تسبيح - موسوعات</div>
-
-    <div class="location-selector-box">
-      <select id="countrySelect" onchange="onCountryChange()"></select>
-      <select id="citySelect" onchange="onCityChange()"></select>
-    </div>
-
-    <div class="prayers-mini-bar">
-      <div class="prayer-box"><span>الفجر</span><span id="fajrTime">--:--</span></div>
-      <div class="prayer-box"><span>الشروق</span><span id="sunriseTime">--:--</span></div>
-      <div class="prayer-box"><span>الظهر</span><span id="dhuhrTime">--:--</span></div>
-      <div class="prayer-box"><span>العصر</span><span id="asrTime">--:--</span></div>
-      <div class="prayer-box"><span>المغرب</span><span id="maghribTime">--:--</span></div>
-      <div class="prayer-box"><span>العشاء</span><span id="ishaTime">--:--</span></div>
-    </div>
-    <div class="prayer-status-msg" id="prayerStatusMsg">⚠️ تعذر تحديث مواقيت الصلاة حالياً، تأكد من الاتصال بالإنترنت.</div>
-  </header>
-
-  <!-- شبكة الأقسام المدمجة (تجمع أزرار رفيق المسلم وأثر معاً) -->
-  <div class="dashboard-container" id="homeDashboard">
-    <div class="dashboard-grid">
-      <div class="dashboard-card" onclick="openSection('quranSection')">
-        <div class="card-icon">📜</div>
-        <div class="card-title">سور القرآن الكريم</div>
-      </div>
-      <div class="dashboard-card" onclick="openSection('azkarSection')">
-        <div class="card-icon">🤲</div>
-        <div class="card-title">حصن المسلم والأذكار</div>
-      </div>
-      <div class="dashboard-card" onclick="openSection('radioSection')">
-        <div class="card-icon">📻</div>
-        <div class="card-title">إذاعات القرآن والابتهالات</div>
-      </div>
-      <div class="dashboard-card" onclick="openSection('hadithSection')">
-        <div class="card-icon">📖</div>
-        <div class="card-title">الأحاديث النبوية الشريفة</div>
-      </div>
-      <div class="dashboard-card" onclick="openSection('tasbeehSection')">
-        <div class="card-icon">📿</div>
-        <div class="card-title">السبحة الإلكترونية</div>
-      </div>
-      <div class="dashboard-card" onclick="openSection('searchSection')">
-        <div class="card-icon">🔍</div>
-        <div class="card-title">البحث في الآيات</div>
-      </div>
-      <div class="dashboard-card" onclick="openSection('ibtihalatSection')">
-        <div class="card-icon">🎙️</div>
-        <div class="card-title">الابتهالات الدينية</div>
-      </div>
-      <div class="dashboard-card" onclick="openSection('contactSection')" style="grid-column: span 2; flex-direction: row; justify-content: center; gap: 12px; padding: 16px;">
-        <div class="card-icon" style="font-size: 28px;">📩</div>
-        <div class="card-title" style="font-size: 0.95rem;">تواصل واقتراحات</div>
-      </div>
-    </div>
-  </div>
-
-  <!-- الأقسام البرمجية والشاشات -->
-  <div class="section-view" id="quranSection">
-    <button class="back-home-btn" onclick="goHome()">⬅ العودة للرئيسية</button>
-    <div class="bookmark-bar" id="bookmarkBar">
-      <span id="bookmarkText">📌 آخر سورة توقفت عندها: --</span>
-      <button class="btn btn-read" onclick="resumeBookmark()">متابعة القراءة</button>
-    </div>
-    <div style="background:var(--card-bg); padding:16px; border-radius:16px; border:1px solid var(--border);">
-      <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:12px;">
-        <div>
-          <label style="font-size:0.8rem; font-weight:750; display:block; margin-bottom:4px; color:var(--text);">🎙️ القارئ:</label>
-          <select id="reciterSelect" onchange="onReciterChange()" style="width:100%; padding:10px; border-radius:8px; border:1px solid var(--border); background:var(--bg); color:var(--text);"></select>
+      <section class="dedication">
+        <img class="ded-photo" src="father.jpg" alt="المرحوم عيد فتحي أبو طالب" width="112" height="112">
+        <div class="ded-label">صدقة جارية على روح</div>
+        <div class="ded-name">المرحوم بإذن الله<br>عيد فتحي أبو طالب</div>
+        <p class="ded-dua">اللَّهُمَّ اغْفِرْ لَهُ وَارْحَمْهُ، وَعَافِهِ وَاعْفُ عَنْهُ، وَأَكْرِمْ نُزُلَهُ، وَوَسِّعْ مُدْخَلَهُ، وَاغْسِلْهُ بِالْمَاءِ وَالثَّلْجِ وَالْبَرَدِ</p>
+        <div class="ded-actions">
+          <button class="btn ded-btn" data-go="zikr/deceased">🤲 أدعية للمتوفى</button>
         </div>
-        <div>
-          <label style="font-size:0.8rem; font-weight:750; display:block; margin-bottom:4px; color:var(--text);">🔍 بحث السورة:</label>
-          <input type="text" id="searchInput" oninput="renderSurahs()" placeholder="ابحث باسم السورة..." style="width:100%; padding:10px; border-radius:8px; border:1px solid var(--border); background:var(--bg); color:var(--text);">
-        </div>
+      </section>
+
+      <div class="grid">
+        <button class="tile" data-go="quran"><span class="ic">📖</span>القرآن</button>
+        <button class="tile" data-go="audio"><span class="ic">🎧</span>المكتبة الصوتية</button>
+        <button class="tile" data-go="radio"><span class="ic">📻</span>إذاعة القرآن</button>
+        <button class="tile" data-go="ibtihal"><span class="ic">🎙️</span>الابتهالات</button>
+        <button class="tile" data-go="enc"><span class="ic">🏛️</span>الموسوعات</button>
+        <button class="tile" data-go="lib/all"><span class="ic">📚</span>المكتبة العلمية</button>
+        <button class="tile" data-go="academy"><span class="ic">🎓</span>الأكاديمية</button>
+        <button class="tile" data-go="hifz"><span class="ic">🧠</span>حفظ القرآن</button>
+        <button class="tile" data-go="hadith"><span class="ic">📜</span>الحديث الشريف</button>
+        <button class="tile" data-go="dawah"><span class="ic">🎬</span>المكتبة الدعوية</button>
+        <button class="tile" data-go="zikr/evening"><span class="ic">🌙</span>أذكار المساء</button>
+        <button class="tile" data-go="prayers"><span class="ic">🕌</span>المواقيت</button>
+        <button class="tile" data-go="tasbih"><span class="ic">📿</span>السبحة</button>
+        <button class="tile" data-go="qibla"><span class="ic">🧭</span>القبلة</button>
+        <button class="tile" data-go="names"><span class="ic">✨</span>الأسماء الحسنى</button>
+        <button class="tile" data-go="khatma"><span class="ic">📗</span>ختمة القرآن</button>
+        <button class="tile" data-go="tracker"><span class="ic">✅</span>متابعة الصلوات</button>
+        <button class="tile" data-go="calendar"><span class="ic">📅</span>التقويم الهجري</button>
+        <button class="tile" data-go="zikr/duas"><span class="ic">🤲</span>أدعية قرآنية</button>
+        <button class="tile" data-go="calc"><span class="ic">🧮</span>الحاسبات الإسلامية</button>
+        <button class="tile" data-go="fiqh"><span class="ic">⚖️</span>الموسوعة الفقهية</button>
+        <button class="tile" data-go="bookmarks"><span class="ic">🔖</span>العلامات</button>
       </div>
-      <div style="margin-bottom:12px; padding:8px 12px; background:var(--bg); border-radius:8px; font-size:0.88rem; color:var(--text); font-weight:700;">
-        <span id="reciterNameTag">تلاوة بصوت: الشيخ خالد القحطاني</span>
-      </div>
-      <div class="surah-grid" id="surahContainer"></div>
-    </div>
+
+      <div id="homeExtras"></div>
+
+      <div class="card"><h3>📖 آية اليوم</h3><p class="ayah-text">﴿إِنَّ اللَّهَ مَعَ الصَّابِرِينَ﴾</p><div class="ref">البقرة: ١٥٣</div></div>
+      <div class="card"><h3>💬 حديث اليوم</h3><p class="hadith-text">«كَلِمَتَانِ خَفِيفَتَانِ عَلَى اللِّسَانِ، ثَقِيلَتَانِ فِي الْمِيزَانِ، حَبِيبَتَانِ إِلَى الرَّحْمَنِ: سُبْحَانَ اللَّهِ وَبِحَمْدِهِ، سُبْحَانَ اللَّهِ الْعَظِيمِ»</p><div class="ref">متفق عليه</div></div>
+    </main>
+
+    <nav class="tabbar" id="tabbar">
+      <button data-route="home" class="active">
+        <svg viewBox="0 0 24 24"><path d="M3 11l9-7 9 7v9a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"></path></svg>
+        <span>الرئيسية</span>
+      </button>
+      <button data-route="prayers">
+        <svg viewBox="0 0 24 24"><path d="M12 2c1.5 2 3 3 3 5a3 3 0 0 1-6 0c0-2 1.5-3 3-5z"></path><path d="M5 22V12a7 7 0 0 1 14 0v10"></path><path d="M3 22h18"></path></svg>
+        <span>الصلاة</span>
+      </button>
+      <button data-route="quran">
+        <svg viewBox="0 0 24 24"><path d="M4 5a2 2 0 0 1 2-2h13v16H6a2 2 0 0 0-2 2z"></path><path d="M4 21a2 2 0 0 1 2-2h13v2H6"></path><path d="M12 7v6M9 10h6"></path></svg>
+        <span>القرآن</span>
+      </button>
+      <button data-route="azkar">
+        <svg viewBox="0 0 24 24"><path d="M12 3a9 9 0 1 0 9 9 7 7 0 0 1-9-9z"></path></svg>
+        <span>الأذكار</span>
+      </button>
+      <button data-route="tasbih">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="5" r="2"></circle><circle cx="6.5" cy="8.5" r="2"></circle><circle cx="17.5" cy="8.5" r="2"></circle><circle cx="5" cy="14.5" r="2"></circle><circle cx="19" cy="14.5" r="2"></circle><circle cx="12" cy="19" r="3"></circle></svg>
+        <span>السبحة</span>
+      </button>
+    </nav>
   </div>
 
-  <!-- باقي أقسام التطبيق -->
-  <div class="section-view" id="hadithSection">
-    <button class="back-home-btn" onclick="goHome()">⬅ العودة للرئيسية</button>
-    <div style="background:var(--card-bg); padding:20px; border-radius:16px; border:1px solid var(--border);">
-      <h2 style="color:var(--primary); margin-bottom:6px; text-align:center;">📖 الأحاديث النبوية الشريفة</h2>
-      <div id="hadithContainer" style="display: flex; flex-direction: column; gap: 12px; margin-top: 15px;"></div>
-    </div>
-  </div>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
-  <footer>
-    <div style="font-size: 1.05rem; font-weight: 700; color: var(--primary); margin-bottom: 8px;">
-      🌿 صدقة جارية خالصة لوجه الله تعالى
-    </div>
-    <p style="font-size: 0.95rem; color: var(--text-muted); line-height: 1.8; margin-bottom: 12px;">
-      اللهم اجعل هذا العمل خالصاً لوجهك الكريم، وتقبله صدقة جارية عنا وعن والدينا وأهلينا..
-    </p>
-    <div style="display: inline-block; padding: 6px 16px; background: var(--accent-soft); border: 1px solid var(--accent); border-radius: 20px; font-size: 0.88rem; font-weight: 700; color: var(--primary);">
-      تم التصميم والتطوير بواسطة: <span style="color: var(--accent); font-weight: 800;">Mahmoud Helal</span>
-    </div>
-  </footer>
-
-  <!-- سكربت التشغيل -->
+  <script src="praytimes.js"></script>
+  <script src="data.js"></script>
+  <script src="native-flags.js"></script>
+  <script src="quran-meta.js"></script>
+  <script src="academy-data.js"></script>
+  <script src="audio-lib.js"></script>
+  <script src="academy.js"></script>
+  <script src="hadith-meta.js"></script>
+  <script src="hadith.js"></script>
+  <script src="hifz.js"></script>
+  <script src="dawah.js"></script>
+  <script src="radio.js"></script>
+  <script src="ibtihal.js"></script>
+  <script src="encyc-data.js"></script>
+  <script src="encyc.js"></script>
+  <script src="library.js"></script>
+  <script src="prayer-quran.js"></script>
+  <script src="calc-faraid.js"></script>
+  <script src="calc.js"></script>
+  <script src="calc-debts.js"></script>
+  <script src="calc-fin.js"></script>
+  <script src="calc-kaff.js"></script>
+  <script src="calc-ibadat.js"></script>
+  <script src="calc-contract.js"></script>
+  <script src="fiqh.js"></script>
+  <script src="fiqh-ask.js"></script>
+  <script src="azkar-data.js"></script>
+  <script src="azkar.js"></script>
+  <script src="share.js"></script>
   <script src="app.js"></script>
 </body>
-</html>
+</html>"""
+
+with open("index.html", "w", encoding="utf-8") as f:
+    f.write(html_content)
